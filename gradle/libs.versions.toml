@@ -1,28 +1,33 @@
 [versions]
 
-activity-compose = "1.6.1"
-androidx-junit = "1.1.5"
 appcompat = "1.6.1"
+core = "1.9.0"
+espresso-core = "3.5.1"
+activity-compose = "1.6.1"
 
 compose = "1.3.1"
+compose-bom = "2023.01.00"
+material3 = "1.0.1"
 accompanist = "0.28.0"
 
-compose-bom = "2023.01.00"
-core = "1.9.0"
 coroutines = "1.6.4"
-espresso-core = "3.5.1"
-gson = "2.10"
+
 hilt-android = "2.42"
 hilt-android-compiler = "2.42"
+hilt-navigation-compose = "1.1.0-alpha01"
 javax-inject = "1"
+
 junit = "4.13.2"
+androidx-junit = "1.1.5"
+
 lifecycle-runtime-ktx = "2.5.1"
 lifecyle = "2.5.1"
-material3 = "1.0.1"
+
 room-ktx = "2.5.0"
 room-runtime = "2.5.0"
 
 retrofit = "2.9.0"
+gson = "2.10"
 
 [libraries]
 
@@ -40,11 +45,10 @@ compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-foundation-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-
-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
-
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 compose-animation-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
+
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 
 accompanist-pager-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
@@ -53,13 +57,16 @@ accompanist-navigation = { module = "com.google.accompanist:accompanist-navigati
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 kotlin-coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+junit = { module = "junit:junit", version.ref = "junit" }
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
-retrofit2 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android-compiler" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose"}
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
-junit = { module = "junit:junit", version.ref = "junit" }
+
+retrofit2 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-ktx" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
 
