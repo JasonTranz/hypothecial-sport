@@ -7,3 +7,7 @@ data class TeamResponse(
     @SerializedName("name") val name: String? = null,
     @SerializedName("logo") val logo: String? = null
 )
+
+data class TeamListResponse(
+    @SerializedName("teams") val teams: List<TeamResponse>? = null
+)

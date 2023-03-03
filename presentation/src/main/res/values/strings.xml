@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">sport</string>
+
+    <string name="navigation_bar_home_title">Home</string>
+    <string name="navigation_bar_team_title">Team</string>
+    <string name="navigation_bar_favorite_title">Favorite</string>
+    <string name="navigation_bar_menu_title">Menu</string>
+
+    <string name="tab_page_upcoming_title">Upcoming</string>
+    <string name="tab_page_history_title">History</string>
+
+    <string name="match_highlight">Highlight</string>
 </resources>

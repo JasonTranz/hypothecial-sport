@@ -1,5 +1,6 @@
 package com.jason.data.api
 
+import com.jason.data.entity.MatchCollectionListResponse
 import com.jason.data.entity.MatchResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
@@ -14,7 +15,7 @@ interface MatchAPI {
     }
 
     @GET(GET_MATCH_LIST)
-    fun getMatchList(): Flow<List<MatchResponse>>
+    fun getMatchList(): Flow<MatchCollectionListResponse>
 
     @GET(GET_TEAM_MATCH_LIST)
     fun getTeamMatchList(

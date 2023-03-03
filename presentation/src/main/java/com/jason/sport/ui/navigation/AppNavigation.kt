@@ -14,6 +14,8 @@ import com.jason.sport.ui.component.enterTransition
 import com.jason.sport.ui.component.popEnterTransition
 import com.jason.sport.ui.feature.home.view.HomeScreen
 import com.jason.sport.ui.feature.home.viewModel.HomeViewModel
+import com.jason.sport.ui.feature.splash.view.SplashScreen
+import com.jason.sport.ui.feature.splash.viewModel.SplashViewModel
 import com.jason.sport.ui.feature.team.view.TeamDetailScreen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 fun AppNavigation(
     navigator: AppNavigator,
+    splashViewModel: SplashViewModel = hiltViewModel(),
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val navController = rememberAnimatedNavController()
@@ -42,15 +45,28 @@ fun AppNavigation(
         }.launchIn(this)
     }
 
+    val splashRoute = navigator.getRoute(NavTarget.SplashScreen)
     val homeRoute = navigator.getRoute(NavTarget.HomeScreen)
     val teamDetailRoute = navigator.getRoute(NavTarget.TeamDetailScreen)
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = homeRoute
+        startDestination = splashRoute
     ) {
         composable(
+            route = splashRoute
+        ) {
+            SplashScreen(
+                navigator = navigator,
+                splashViewModel = splashViewModel
+            )
+        }
+
+        composable(
             route = homeRoute,
+            enterTransition = {
+                enterTransition(listOf(splashRoute))
+            },
             popEnterTransition = {
                 popEnterTransition(listOf(teamDetailRoute))
             }

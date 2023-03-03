@@ -1,5 +1,9 @@
 package com.jason.sport.ui.component
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,11 +14,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,36 +37,36 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.jason.sport.util.WindowUtil
+import com.jason.sport.R
+import com.jason.sport.util.DefaultButtonHeight
+import com.jason.sport.util.SmallSpace
 import kotlinx.coroutines.launch
 
 sealed class TabPageObject(val resLabelId: Int) {
-
+    object Upcoming : TabPageObject(resLabelId = R.string.tab_page_upcoming_title)
+    object History : TabPageObject(resLabelId = R.string.tab_page_history_title)
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun TabPage(
+fun CustomTabPage(
     pagerState: PagerState,
     tabs: List<TabPageObject>
 ) {
     val tabIndex = remember { mutableStateOf(pagerState.currentPage) }
     val coroutineScope = rememberCoroutineScope()
-//
-//    fun getSelectedColor(currentIndex: Int): Color {
-//        return if (tabIndex.value == )
-//    }
 
     TabRow (
         selectedTabIndex = tabIndex.value,
         indicator = { tabPositions ->
             TabRowIndicator(pagerState = pagerState, tabPositions = tabPositions)
         },
-        backgroundColor = MaterialTheme.colors.primary
+        backgroundColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
     ) {
         tabs.forEachIndexed { index, tabItem ->
+            val selectedColor = getSelectedColor(tabIndex.value, index)
             CustomTab(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = SmallSpace()),
                 selected = tabIndex.value == index,
                 onClick = {
                     tabIndex.value = index
@@ -68,9 +75,18 @@ private fun TabPage(
                     }
                 },
                 title = stringResource(id = tabItem.resLabelId),
-                tabTitleColor = Color.White
+                tabTitleColor = selectedColor
             )
         }
+    }
+}
+
+@Composable
+fun getSelectedColor(tabIndex: Int, currentIndex: Int): Color {
+    return if (tabIndex == currentIndex) {
+        MaterialTheme.colorScheme.onBackground
+    } else {
+        MaterialTheme.colorScheme.secondary
     }
 }
 
@@ -80,27 +96,29 @@ fun CustomTab(
     modifier: Modifier = Modifier,
     modifierText: Modifier = Modifier,
     title: String,
-    tabHeight: Dp = WindowUtil.GetStatusBarHeight(),
-    fontSize: TextUnit = 12.sp,
+    tabHeight: Dp = DefaultButtonHeight(),
+    fontSize: TextUnit = 13.sp,
     tabTitleColor: Color,
     onClick: () -> Unit,
     selectedContentColor: Color = LocalContentColor.current,
     unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f),
 ) {
-    Column(
-        modifier = modifier
-            .clickable { onClick() }
-            .height(tabHeight),
-        verticalArrangement = Arrangement.Center
-    ) {
-        BoldText(
-            modifier = modifierText.fillMaxWidth(),
-            content = title,
-            fontSize = fontSize,
-            color = tabTitleColor,
-            textAlign = TextAlign.Center,
-            maxLines = 1
-        )
+    CustomTransition(selectedContentColor, unselectedContentColor, selected) {
+        Column(
+            modifier = modifier
+                .clickable { onClick() }
+                .height(tabHeight),
+            verticalArrangement = Arrangement.Center
+        ) {
+            BoldText(
+                modifier = modifierText.fillMaxWidth(),
+                content = title,
+                fontSize = fontSize,
+                color = tabTitleColor,
+                textAlign = TextAlign.Center,
+                maxLines = 1
+            )
+        }
     }
 }
 
@@ -113,7 +131,7 @@ fun TabRowIndicator(
     indicatorWidth: Dp = 20.dp,
     indicatorHeight: Dp = 2.dp,
     padding: Dp = 20.dp,
-    color: Color = MaterialTheme.colors.primary
+    color: Color = MaterialTheme.colorScheme.primary
 ) {
     Box(
         modifier = modifier
@@ -121,9 +139,49 @@ fun TabRowIndicator(
                 pagerState,
                 tabPositions
             )
-            .size(height = indicatorHeight, width = indicatorWidth)
+            .size(
+                height = indicatorHeight,
+                width = indicatorWidth
+            )
             .clip(RoundedCornerShape(2.dp)) // clip modifier not working
             .padding(horizontal = padding)
             .background(color = color)
+    )
+}
+
+@Composable
+fun CustomTransition(
+    activeColor: Color,
+    inactiveColor: Color,
+    selected: Boolean,
+    content: @Composable () -> Unit,
+) {
+    val tabFadeInAnimationDuration = 350
+    val tabFadeInAnimationDelay = 300
+    val tabFadeOutAnimationDuration = 300
+
+    val transition = updateTransition(selected, label = "")
+    val color by transition.animateColor(
+        transitionSpec = {
+            if (false isTransitioningTo true) {
+                tween(
+                    durationMillis = tabFadeInAnimationDuration,
+                    delayMillis = tabFadeInAnimationDelay,
+                    easing = LinearEasing
+                )
+            } else {
+                tween(
+                    durationMillis = tabFadeOutAnimationDuration,
+                    easing = LinearEasing
+                )
+            }
+        }, label = ""
+    ) {
+        if (it) activeColor else inactiveColor
+    }
+    CompositionLocalProvider(
+        LocalContentColor provides color.copy(alpha = 1f),
+        LocalContentAlpha provides color.alpha,
+        content = content
     )
 }

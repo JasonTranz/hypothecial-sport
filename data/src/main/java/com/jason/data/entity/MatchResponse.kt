@@ -10,3 +10,12 @@ data class MatchResponse(
     @SerializedName("winner") val winner: String? = null,
     @SerializedName("highlights") val highlights: String? = null,
 )
+
+data class MatchListResponse(
+    @SerializedName("previous") val previous: List<MatchResponse>? = null,
+    @SerializedName("upcoming") val upcoming: List<MatchResponse>? = null,
+)
+
+data class MatchCollectionListResponse(
+    @SerializedName("matches") val matches: MatchListResponse? = null
+)
