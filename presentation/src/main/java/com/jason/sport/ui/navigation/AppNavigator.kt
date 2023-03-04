@@ -21,8 +21,16 @@ class AppNavigator @Inject constructor() {
     private val mutableSharedFlow = MutableSharedFlow<NavigationRouteData>(extraBufferCapacity = 1)
     var sharedFlow = mutableSharedFlow.asSharedFlow()
 
+    fun popBackStack() {
+        mutableSharedFlow.tryEmit(NavigationRouteData(isPopBackStack = true))
+    }
+
     fun getRoute(navTarget: NavTarget): String {
         return navTarget.route + getRouteSuffix(navTarget)
+    }
+
+    fun goToHomeScreen() {
+        navigateTo(navTarget = NavTarget.HomeScreen)
     }
 
     fun goToTeamDetailScreen(teamId: String) {
@@ -38,8 +46,17 @@ class AppNavigator @Inject constructor() {
 
     private fun getRouteSuffix(navTarget: NavTarget): String {
         return when (navTarget) {
-            NavTarget.HomeScreen -> "/{${NavArgument.TEAM_ID}}"
+            NavTarget.TeamDetailScreen -> "/{${NavArgument.TEAM_ID}}"
             else -> ""
+        }
+    }
+
+    fun getArguments(navTarget: NavTarget): List<NamedNavArgument> {
+        return when (navTarget) {
+            is NavTarget.TeamDetailScreen -> listOf(
+                navArgument(NavArgument.TEAM_ID) { type = NavType.StringType },
+            )
+            else -> listOf()
         }
     }
 
@@ -56,7 +73,7 @@ class AppNavigator @Inject constructor() {
     private fun navigateTo(
         navTarget: NavTarget,
         navArguments: List<NamedNavArgument>? = emptyList(),
-        popUpToRoute: String? = "",
+        popUpToRoute: String? = null,
     ) {
         mutableSharedFlow.tryEmit(
             NavigationRouteData(

@@ -1,6 +1,7 @@
 package com.jason.data.service
 
 import com.jason.data.api.TeamAPI
+import com.jason.data.entity.TeamListResponse
 import com.jason.data.entity.TeamResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Retrofit
@@ -13,7 +14,7 @@ class TeamService @Inject constructor(
         retrofit.newBuilder().build().create(TeamAPI::class.java)
     }
 
-    override fun getTeamList(): Flow<List<TeamResponse>> {
+    override fun getTeamList(): Flow<TeamListResponse> {
         return api.getTeamList()
     }
 }

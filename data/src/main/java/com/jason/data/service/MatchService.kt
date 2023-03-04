@@ -1,6 +1,7 @@
 package com.jason.data.service
 
 import com.jason.data.api.MatchAPI
+import com.jason.data.entity.MatchCollectionListResponse
 import com.jason.data.entity.MatchResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Retrofit
@@ -14,7 +15,7 @@ class MatchService @Inject constructor(
         retrofit.newBuilder().build().create(MatchAPI::class.java)
     }
 
-    override fun getMatchList(): Flow<List<MatchResponse>> {
+    override fun getMatchList(): Flow<MatchCollectionListResponse> {
         return api.getMatchList()
     }
 

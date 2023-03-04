@@ -24,7 +24,11 @@ class TeamRepository @Inject constructor(
                 .flowOn(Dispatchers.IO)
                 .flatMapMerge {
                     flow {
-                        emit(it.map { it.toTeam() })
+                        if (it.teams != null) {
+                            emit(it.teams.map { it.toTeam() })
+                        } else {
+                            emit(null)
+                        }
                     }
                 }
                 .catch {
