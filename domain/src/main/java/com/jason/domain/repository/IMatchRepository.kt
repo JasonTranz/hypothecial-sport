@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface IMatchRepository {
     fun getMatchList(): Flow<AppResult<MatchCollectionList>>
-    fun getTeamMatchList(id: String): Flow<AppResult<List<Match>>>
+    fun getTeamMatchList(id: String): Flow<AppResult<MatchCollectionList>>
 }

@@ -79,3 +79,8 @@ fun HugeSpaceX(): Dp {
 fun DefaultButtonHeight(): Dp {
     return dimensionResource(id = R.dimen._42sdp)
 }
+
+@Composable
+fun DefaultButtonSmallHeight(): Dp {
+    return dimensionResource(id = R.dimen._36sdp)
+}

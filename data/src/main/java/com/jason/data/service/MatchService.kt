@@ -19,7 +19,7 @@ class MatchService @Inject constructor(
         return api.getMatchList()
     }
 
-    override fun getTeamMatchList(teamId: String): Flow<List<MatchResponse>> {
+    override fun getTeamMatchList(teamId: String): Flow<MatchCollectionListResponse> {
         return api.getTeamMatchList(teamId)
     }
 }

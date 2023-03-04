@@ -7,7 +7,6 @@ data class Match(
     var away: Team = Team(),
     val winner: String = "",
     val highlights: String = "",
-    val isFavorite: Boolean = false,
     val isReminder: Boolean = false
 )
 

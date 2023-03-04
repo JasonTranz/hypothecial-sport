@@ -3,6 +3,8 @@ package com.jason.sport.ui.component
 import android.graphics.BlurMaskFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.runtime.Composable
@@ -86,5 +88,12 @@ fun Modifier.innerShadow(
         )
         frameworkPaint.xfermode = null
         frameworkPaint.maskFilter = null
+    }
+}
+
+inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
+    clickable(indication = null,
+        interactionSource = remember { MutableInteractionSource() }) {
+        onClick()
     }
 }

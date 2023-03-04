@@ -20,5 +20,5 @@ interface MatchAPI {
     @GET(GET_TEAM_MATCH_LIST)
     fun getTeamMatchList(
         @Path(TEAM_ID) teamId: String
-    ): Flow<List<MatchResponse>>
+    ): Flow<MatchCollectionListResponse>
 }

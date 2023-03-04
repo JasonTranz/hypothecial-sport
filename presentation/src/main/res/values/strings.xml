@@ -10,4 +10,9 @@
     <string name="tab_page_history_title">History</string>
 
     <string name="match_highlight">Highlight</string>
+
+    <string name="team_title">Team</string>
+
+    <string name="team_win_state">Win</string>
+    <string name="team_lose_state">Lose</string>
 </resources>
