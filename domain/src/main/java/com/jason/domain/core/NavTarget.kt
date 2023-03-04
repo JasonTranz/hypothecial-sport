@@ -9,4 +9,6 @@ sealed class NavTarget(val route: String) {
     object TeamListScreen : NavTarget(route = "TeamListScreen")
 
     object TeamDetailScreen : NavTarget(route = "TeamDetailScreen")
+
+    object MediaPlayerScreen : NavTarget(route = "MediaPlayerScreen")
 }

@@ -1,4 +1,4 @@
-package com.jason.sport.ui.feature.home.view
+package com.jason.sport.ui.feature.match.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,9 +17,10 @@ import com.google.accompanist.pager.rememberPagerState
 import com.jason.domain.entity.Match
 import com.jason.sport.ui.component.CustomTabPage
 import com.jason.sport.ui.component.TabPageObject
-import com.jason.sport.ui.feature.home.view.item.MatchItemView
+import com.jason.sport.ui.feature.match.view.item.MatchItemView
 import com.jason.sport.ui.feature.home.viewModel.HomeViewModel
 import com.jason.sport.ui.navigation.AppNavigator
+import com.jason.sport.util.encodeUrl
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -92,12 +93,19 @@ fun HistoryMatches(
     navigator: AppNavigator,
     matches: List<Match>
 ) {
+    fun goToMediaPlayerScreen(mediaUrl: String) {
+        navigator.goToMediaPlayerScreen(mediaUrl.encodeUrl())
+    }
+
     LazyColumn {
         items(
             count = matches.size,
             key = { it },
             itemContent = {
-                MatchItemView(match = matches[it])
+                MatchItemView(
+                    match = matches[it],
+                    onItemPressed = { goToMediaPlayerScreen(it.highlights) }
+                )
             }
         )
     }
