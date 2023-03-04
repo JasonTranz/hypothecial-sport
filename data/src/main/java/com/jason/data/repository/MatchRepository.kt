@@ -46,13 +46,17 @@ class MatchRepository @Inject constructor(
         }
     }
 
-    override fun getTeamMatchList(id: String): Flow<AppResult<List<Match>>> {
+    override fun getTeamMatchList(id: String): Flow<AppResult<MatchCollectionList>> {
         return flow {
             matchService.getTeamMatchList(id)
                 .flowOn(Dispatchers.IO)
                 .flatMapMerge {
                     flow {
-                        emit(it.map { it.toMatch() })
+                        if (it.matches != null) {
+                            emit(it.toMatchCollectionList())
+                        } else {
+                            emit(null)
+                        }
                     }
                 }
                 .catch {

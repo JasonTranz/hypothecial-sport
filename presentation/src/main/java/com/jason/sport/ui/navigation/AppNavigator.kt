@@ -33,6 +33,10 @@ class AppNavigator @Inject constructor() {
         navigateTo(navTarget = NavTarget.HomeScreen)
     }
 
+    fun goToTeamListScreen() {
+        navigateTo(navTarget = NavTarget.TeamListScreen)
+    }
+
     fun goToTeamDetailScreen(teamId: String) {
         navigateTo(
             navTarget = NavTarget.TeamDetailScreen,

@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,8 @@ import com.jason.sport.R
 import com.jason.sport.ui.component.BoldText
 import com.jason.sport.ui.component.GlideImage
 import com.jason.sport.ui.component.RegularText
+import com.jason.sport.ui.component.ResImage
+import com.jason.sport.ui.component.SemiBoldText
 import com.jason.sport.util.TinySpace
 import com.jason.sport.util.TinySpaceX
 import com.jason.sport.util.changeDateFormat
@@ -42,13 +45,8 @@ fun MatchItemView(
     match: Match,
     onItemPressed: ((Match) -> Unit)? = null,
 ) {
-    val favoriteResIconId = remember { mutableStateOf(R.drawable.ic_star_border) }
     val reminderResIconId = remember { mutableStateOf(R.drawable.ic_reminder_border) }
     val hasWinner = remember { mutableStateOf(false) }
-
-    LaunchedEffect(match.isFavorite) {
-        favoriteResIconId.value = getResFavoriteIconId(match.isFavorite)
-    }
 
     LaunchedEffect(match.isReminder) {
         reminderResIconId.value = getReminderIconId(match.isReminder)
@@ -71,21 +69,11 @@ fun MatchItemView(
     ) {
         ConstraintLayout(
             modifier = modifier
+                .clickable { onItemPressed?.invoke(match) }
                 .padding(vertical = 10.dp)
                 .fillMaxWidth()
-                .clickable { onItemPressed?.invoke(match) }
         ) {
-            val (favorite, home, timeAndHighlight, away, reminder) = createRefs()
-
-            //            ResImage(
-            //                modifier = Modifier
-            //                    .size(15.dp)
-            //                    .constrainAs(favorite) {
-            //                        centerVerticallyTo(parent)
-            //                        start.linkTo(parent.start)
-            //                    },
-            //                resIconId = favoriteResIconId.value,
-            //            )
+            val (home, timeAndHighlight, away, reminder) = createRefs()
 
             Column(
                 modifier = Modifier.constrainAs(timeAndHighlight) {
@@ -116,20 +104,25 @@ fun MatchItemView(
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        RegularText(content = stringResource(id = R.string.match_highlight), textAlign = TextAlign.Center)
+                        RegularText(
+                            content = stringResource(id = R.string.match_highlight),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             }
 
-            //            ResImage(
-            //                resIconId = reminderResIconId.value,
-            //                modifier = Modifier
-            //                    .size(15.dp)
-            //                    .constrainAs(reminder) {
-            //                        centerVerticallyTo(parent)
-            //                        end.linkTo(parent.end)
-            //                    }
-            //            )
+            if (!hasWinner.value) {
+                ResImage(
+                    resIconId = reminderResIconId.value,
+                    modifier = Modifier
+                        .size(15.dp)
+                        .constrainAs(reminder) {
+                            end.linkTo(parent.end, 5.dp)
+                            top.linkTo(parent.top)
+                        }
+                )
+            }
 
             TextIcon(
                 modifier = Modifier.constrainAs(home) {
@@ -140,7 +133,10 @@ fun MatchItemView(
                     )
                 },
                 title = match.home.name,
-                url = match.home.logo
+                url = match.home.logo,
+                currentTeamName = match.home.name,
+                winTeamName = match.winner,
+                hasWinner = hasWinner.value
             )
 
             IconText(
@@ -152,10 +148,39 @@ fun MatchItemView(
                     )
                 },
                 title = match.away.name,
-                url = match.away.logo
+                url = match.away.logo,
+                currentTeamName = match.away.name,
+                winTeamName = match.winner,
+                hasWinner = hasWinner.value
             )
         }
     }
+}
+
+@Composable
+private fun WinStateText(
+    currentTeamName: String,
+    winTeamName: String,
+    hasWinner: Boolean
+) {
+    if (!hasWinner) {
+        return
+    }
+    val colorState: Color
+    val winStateText: String
+
+    if (currentTeamName == winTeamName) {
+        colorState = MaterialTheme.colorScheme.primary
+        winStateText = stringResource(id = R.string.team_win_state)
+    } else {
+        colorState = MaterialTheme.colorScheme.secondary
+        winStateText = stringResource(id = R.string.team_lose_state)
+    }
+
+    SemiBoldText(
+        content = winStateText,
+        color = colorState
+    )
 }
 
 @Preview
@@ -185,16 +210,28 @@ private fun ItemDefaultPreview() {
 fun TextIcon(
     modifier: Modifier = Modifier,
     title: String,
-    url: String
+    url: String,
+    currentTeamName: String = "",
+    winTeamName: String = "",
+    hasWinner: Boolean = false
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RegularText(
-            content = removeTeamText(title),
-            modifier = Modifier.padding(end = 10.dp)
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            RegularText(
+                content = removeTeamText(title),
+                modifier = Modifier.padding(end = 10.dp)
+            )
+            WinStateText(
+                currentTeamName = currentTeamName,
+                winTeamName = winTeamName,
+                hasWinner = hasWinner
+            )
+        }
         GlideImage(
             imageUrl = url,
             modifier = Modifier
@@ -208,7 +245,10 @@ fun TextIcon(
 fun IconText(
     modifier: Modifier = Modifier,
     title: String,
-    url: String
+    url: String,
+    currentTeamName: String = "",
+    winTeamName: String = "",
+    hasWinner: Boolean = false
 ) {
     Row(
         modifier = modifier,
@@ -220,18 +260,19 @@ fun IconText(
                 .size(35.dp)
                 .clip(CircleShape)
         )
-        RegularText(
-            content = removeTeamText(title),
-            modifier = Modifier.padding(start = 10.dp)
-        )
-    }
-}
-
-private fun getResFavoriteIconId(isFavorite: Boolean): Int {
-    return if (isFavorite) {
-        R.drawable.ic_star_filled
-    } else {
-        R.drawable.ic_star_border
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            RegularText(
+                content = removeTeamText(title),
+                modifier = Modifier.padding(start = 10.dp)
+            )
+            WinStateText(
+                currentTeamName = currentTeamName,
+                winTeamName = winTeamName,
+                hasWinner = hasWinner
+            )
+        }
     }
 }
 

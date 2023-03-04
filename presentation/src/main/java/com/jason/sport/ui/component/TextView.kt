@@ -44,7 +44,7 @@ fun RegularText(
 fun SemiBoldText(
     modifier: Modifier = Modifier,
     content: String,
-    fontSize: TextUnit = 12.sp,
+    fontSize: TextUnit = 13.sp,
     color: Color = MaterialTheme.colorScheme.onBackground,
     fontStyle: FontStyle = FontStyle.Normal,
     fontWeight: FontWeight = FontWeight.SemiBold,
@@ -61,9 +61,9 @@ fun SemiBoldText(
             color = color,
             textAlign = textAlign,
             textDecoration = textDecoration,
-            fontStyle = fontStyle
+            fontStyle = fontStyle,
         ),
-        maxLines = maxLines
+        maxLines = maxLines,
     )
 }
 

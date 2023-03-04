@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
         getMatchAndTeamList()
     }
 
-    fun getMatchAndTeamList() {
+    private fun getMatchAndTeamList() {
         var previousMatches: List<Match>
         var upcomingMatches: List<Match>
         var teamList: List<Team>
@@ -89,7 +89,10 @@ class HomeViewModel @Inject constructor(
     private fun handleGetTeamListResponse(appResult: AppResult<List<Team>>): List<Team> {
         return when (appResult) {
             is AppResult.Success -> {
-                appResult.data ?: emptyList()
+                appResult.data?.let { teams ->
+                    _teamListDataState.update { it.copy(teams = teams.toMutableList()) }
+                    teams
+                } ?: emptyList()
             }
             is AppResult.Failure -> {
                 emptyList()

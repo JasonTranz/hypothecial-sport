@@ -15,6 +15,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.jason.sport.ui.component.RegularText
 import com.jason.sport.ui.feature.home.viewModel.HomeViewModel
+import com.jason.sport.ui.feature.team.view.TeamListScreen
 import com.jason.sport.ui.navigation.AppNavigator
 import com.jason.sport.ui.navigation.BottomNavItem
 import com.jason.sport.ui.navigation.CustomBottomNavigation
@@ -61,12 +62,10 @@ fun HomeScreen(
                     )
                 }
                 1 -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        RegularText(content = "Team")
-                    }
+                    TeamListScreen(
+                        navigator = navigator,
+                        homeViewModel = homeViewModel
+                    )
                 }
                 2 -> {
                     Column(
