@@ -1,4 +1,4 @@
-package com.jason.sport.ui.feature.home.view.item
+package com.jason.sport.ui.feature.match.view.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

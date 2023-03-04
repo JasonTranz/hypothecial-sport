@@ -15,6 +15,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.jason.sport.ui.component.RegularText
 import com.jason.sport.ui.feature.home.viewModel.HomeViewModel
+import com.jason.sport.ui.feature.match.view.MatchListScreen
 import com.jason.sport.ui.feature.team.view.TeamListScreen
 import com.jason.sport.ui.navigation.AppNavigator
 import com.jason.sport.ui.navigation.BottomNavItem

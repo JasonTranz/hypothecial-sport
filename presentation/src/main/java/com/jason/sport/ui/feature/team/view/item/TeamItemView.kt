@@ -17,7 +17,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.jason.domain.entity.Team
 import com.jason.sport.R
 import com.jason.sport.ui.component.ResImage
-import com.jason.sport.ui.feature.home.view.item.IconText
+import com.jason.sport.ui.feature.match.view.item.IconText
 
 @Composable
 fun TeamItemView(

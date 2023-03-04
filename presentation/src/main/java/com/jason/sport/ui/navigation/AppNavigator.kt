@@ -48,19 +48,22 @@ class AppNavigator @Inject constructor() {
         )
     }
 
+    fun goToMediaPlayerScreen(teamId: String) {
+        navigateTo(
+            navTarget = NavTarget.MediaPlayerScreen,
+            navArguments = listOf(
+                navArgument(NavArgument.MEDIA_URL) {
+                    type = NavType.StringType; defaultValue = teamId
+                }
+            )
+        )
+    }
+
     private fun getRouteSuffix(navTarget: NavTarget): String {
         return when (navTarget) {
             NavTarget.TeamDetailScreen -> "/{${NavArgument.TEAM_ID}}"
+            NavTarget.MediaPlayerScreen -> "/{${NavArgument.MEDIA_URL}}"
             else -> ""
-        }
-    }
-
-    fun getArguments(navTarget: NavTarget): List<NamedNavArgument> {
-        return when (navTarget) {
-            is NavTarget.TeamDetailScreen -> listOf(
-                navArgument(NavArgument.TEAM_ID) { type = NavType.StringType },
-            )
-            else -> listOf()
         }
     }
 
@@ -68,8 +71,9 @@ class AppNavigator @Inject constructor() {
         navTarget: NavTarget,
         navArguments: List<NamedNavArgument>?
     ): String {
-        return when(navTarget) {
+        return when (navTarget) {
             is NavTarget.TeamDetailScreen -> navTarget.route + "/${navArguments?.get(0)?.argument?.defaultValue}"
+            is NavTarget.MediaPlayerScreen -> navTarget.route + "/${navArguments?.get(0)?.argument?.defaultValue}"
             else -> navTarget.route
         }
     }
@@ -81,7 +85,10 @@ class AppNavigator @Inject constructor() {
     ) {
         mutableSharedFlow.tryEmit(
             NavigationRouteData(
-                route = getRouteWithArguments(navTarget, navArguments),
+                route = getRouteWithArguments(
+                    navTarget,
+                    navArguments
+                ),
                 popUpToRoute = popUpToRoute
             )
         )

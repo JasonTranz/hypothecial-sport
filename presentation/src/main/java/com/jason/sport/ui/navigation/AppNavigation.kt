@@ -14,6 +14,7 @@ import com.jason.sport.ui.component.enterTransition
 import com.jason.sport.ui.component.popEnterTransition
 import com.jason.sport.ui.feature.home.view.HomeScreen
 import com.jason.sport.ui.feature.home.viewModel.HomeViewModel
+import com.jason.sport.ui.feature.match.view.MediaPlayerScreen
 import com.jason.sport.ui.feature.splash.view.SplashScreen
 import com.jason.sport.ui.feature.splash.viewModel.SplashViewModel
 import com.jason.sport.ui.feature.team.view.TeamDetailScreen
@@ -51,6 +52,7 @@ fun AppNavigation(
     val homeRoute = navigator.getRoute(NavTarget.HomeScreen)
     val teamListRoute = navigator.getRoute(NavTarget.TeamListScreen)
     val teamDetailRoute = navigator.getRoute(NavTarget.TeamDetailScreen)
+    val mediaPlayerRoute = navigator.getRoute(NavTarget.MediaPlayerScreen)
 
     AnimatedNavHost(
         navController = navController,
@@ -105,6 +107,20 @@ fun AppNavigation(
                 teamId = teamId,
                 teamViewModel = teamViewModel,
                 homeViewModel = homeViewModel
+            )
+        }
+
+        composable(
+            route = mediaPlayerRoute,
+            enterTransition = {
+                enterTransition(listOf(homeRoute))
+            }
+        ) { navBackStackEntry ->
+            val mediaUrl = navBackStackEntry.arguments?.getString(NavArgument.MEDIA_URL) ?: AppConstant.UNDEFINED
+
+            MediaPlayerScreen(
+                navigator = navigator,
+                mediaUrl = mediaUrl
             )
         }
     }

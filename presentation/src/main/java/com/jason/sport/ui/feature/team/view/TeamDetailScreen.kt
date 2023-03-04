@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.jason.sport.R
 import com.jason.sport.ui.component.BackTopBar
 import com.jason.sport.ui.component.BoldText
-import com.jason.sport.ui.feature.home.view.item.MatchItemView
+import com.jason.sport.ui.feature.match.view.item.MatchItemView
 import com.jason.sport.ui.feature.home.viewModel.HomeViewModel
 import com.jason.sport.ui.feature.team.viewModel.TeamViewModel
 import com.jason.sport.ui.navigation.AppNavigator
