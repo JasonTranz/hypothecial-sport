@@ -1,8 +1,13 @@
 # hypothecial-sport
 This is a project for the code interview.
 
-# Features
+# design patter
+- MVVM
 
+# Architecture
+- Clean Architecture
+
+# Features
 - Ability to show all participating teams.
 - Ability to show all previous and upcoming matches.
 - Ability for a user to select a team and filter matches per team.
