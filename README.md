@@ -1,4 +1,4 @@
-## hypothecial-sport
+# Hypothecial Sport
 
 # Description
 This is a project for the code interview.
