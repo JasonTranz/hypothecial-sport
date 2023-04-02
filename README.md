@@ -1,7 +1,9 @@
-# hypothecial-sport
+## hypothecial-sport
+
+# Description
 This is a project for the code interview.
 
-# design patter
+# Design patter
 - MVVM
 
 # Architecture
